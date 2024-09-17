@@ -25,7 +25,6 @@ public class JwtAuthFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         MyUserDetail myUserDetail = (MyUserDetail) jwtUtils.getLoginUser(request);
         if(ObjectUtil.isNotNull(myUserDetail)) {
-            // 鉴权，跳转的时候需要访问 /index 页面
             UsernamePasswordAuthenticationToken authenticationToken =
                     new UsernamePasswordAuthenticationToken(myUserDetail, null, myUserDetail.getAuthorities());
             // 将用户信息存储到SecurityContext中，SecurityContext存储到SecurityContextHolder中

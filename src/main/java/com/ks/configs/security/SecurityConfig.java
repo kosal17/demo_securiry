@@ -34,14 +34,13 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable);
+        http.formLogin(AbstractHttpConfigurer::disable);
         http.authorizeHttpRequests(auth -> auth.requestMatchers("/auth/login.do","/open_api/**").permitAll().anyRequest().authenticated());
         http.exceptionHandling(ex -> ex
                 .authenticationEntryPoint(new MyAuthenticationEntryPoint())
-//                .accessDeniedHandler(new MyAccessDeniedHandler())
         );
-        // 配置跨域
         http.cors(cors -> cors.configurationSource(configurationSource()));
-        // 配置过滤器
+        // FilterBefore
         http.addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }

@@ -24,9 +24,9 @@ public class GlobalExceptionHandler {
     public Result globalAuthenticationExceptionHandler(RuntimeException ex) {
         return Result.error(401,ex.getMessage());
     }
-    @ExceptionHandler(value = RuntimeException.class)
-    public Result globalExceptionHandler(RuntimeException ex) {
-        log.error(ex.getMessage());
-        return Result.error(500,ex.getMessage());
-    }
+//    @ExceptionHandler(value = RuntimeException.class)
+//    public Result globalExceptionHandler(RuntimeException ex) {
+//        log.error(ex.getMessage());
+//        return Result.error(500,ex.getMessage());
+//    }
 }
