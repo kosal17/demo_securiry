@@ -17,19 +17,10 @@ public class Result extends HashMap<String,Object> {
     @Serial
     private static final long serialVersionUID = 1L;
 
-    /**
-     * 状态码
-     */
     public static final String CODE_TAG = "code";
 
-    /**
-     * 返回内容
-     */
-    public static final String MSG_TAG = "msg";
+    public static final String MSG_TAG = "message";
 
-    /**
-     * 数据对象
-     */
     public static final String DATA_TAG = "data";
 
     /**

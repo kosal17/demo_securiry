@@ -15,6 +15,7 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.access.AccessDeniedHandlerImpl;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
@@ -35,7 +36,11 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable);
         http.formLogin(AbstractHttpConfigurer::disable);
-        http.authorizeHttpRequests(auth -> auth.requestMatchers("/auth/login.do","/open_api/**").permitAll().anyRequest().authenticated());
+        http.authorizeHttpRequests(auth -> auth
+//                .requestMatchers("/auth/login.do", "/public/api/**").permitAll()
+//                .anyRequest().authenticated()
+                        .anyRequest().permitAll()
+        );
         http.exceptionHandling(ex -> ex
                 .authenticationEntryPoint(new MyAuthenticationEntryPoint())
         );
@@ -44,6 +49,7 @@ public class SecurityConfig {
         http.addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
+
     @Bean
     public AuthenticationManager myAuthenticationManager() {
         DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
@@ -51,10 +57,12 @@ public class SecurityConfig {
         provider.setUserDetailsService(myUserDetailService);
         return new ProviderManager(provider);
     }
+
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
+
     @Bean
     public CorsConfigurationSource configurationSource() {
         CorsConfiguration corsConfiguration = new CorsConfiguration();
@@ -62,7 +70,7 @@ public class SecurityConfig {
         corsConfiguration.setAllowedHeaders(Collections.singletonList("*"));
         corsConfiguration.setAllowedOrigins(Collections.singletonList("*"));
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**",corsConfiguration);
+        source.registerCorsConfiguration("/**", corsConfiguration);
         return source;
     }
 }
